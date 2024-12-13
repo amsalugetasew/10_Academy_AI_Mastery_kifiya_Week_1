@@ -20,7 +20,7 @@ class Preprocessing:
 
         # Categorize sentiments
         self.dataframe['sentiment_category'] = self.dataframe['sentiment'].apply(
-            lambda x: 'positive' if x > 0.1 else 'negative' if x < -0.1 else 'neutral'
+            lambda x: 'positive' if x > -0.1 else 'negative' if x < -0.1 else 'neutral'
         )
 
         # Calculate sentiment proportions

@@ -1,13 +1,13 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+from preprocessing import preprocess_dates
 class TimeSeries:
     def __init__(self, dataframe):
         """
-        Initializes the TimeSeries class with the provided DataFrame.
+        Initializes the TimeSeries class with the provided DataFrame and preprocesses the date column.
         """
-        self.dataframe = dataframe
+        self.dataframe = preprocess_dates(dataframe)  # Preprocess the DataFrame during initialization
 
     def analyze_publication_frequency(self, time_unit='D'):
         """
@@ -18,11 +18,7 @@ class TimeSeries:
         Args:
             time_unit (str): The frequency for resampling. Options are 'D', 'W', 'M', or 'H'.
         """
-        if 'date' not in self.dataframe.columns:
-            raise ValueError("The dataframe does not contain a 'date' column. Please provide the correct input.")
-
         # Set 'date' as the index for time series analysis
-        self.dataframe['date'] = pd.to_datetime(self.dataframe['date'])
         self.dataframe.set_index('date', inplace=True)
 
         # Resample by the specified time unit and count the number of articles published in each period
@@ -42,9 +38,6 @@ class TimeSeries:
         Analyze the publishing times to identify if there's a specific time of day, week, or month when most news is released.
         This can be useful for traders and automated trading systems to identify patterns in market-related news.
         """
-        if 'date' not in self.dataframe.columns:
-            raise ValueError("The dataframe does not contain a 'date' column. Please provide the correct input.")
-
         # Extract time-related features from the 'date' column
         self.dataframe['hour'] = self.dataframe['date'].dt.hour
         self.dataframe['day_of_week'] = self.dataframe['date'].dt.dayofweek
@@ -77,8 +70,6 @@ class TimeSeries:
         plt.grid(True)
         plt.show()
 
-    
-    
     def analyze_publishers(self):
         """
         Analyze the publishers contributing to the news feed. Identify which publishers are most active,
