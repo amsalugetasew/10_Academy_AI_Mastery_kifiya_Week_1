@@ -1,12 +1,20 @@
 import pandas as pd 
 import os 
+import os
+
+# Get the current working directory
+current_dir = os.getcwd()
+
+# Build the relative path
+
 def get_path_price():
     # Path to the folder containing your CSV files
-    folder_path = '.../week1_data/yfinance_data/'  # Replace with your folder path
+    folder_path = os.path.join(current_dir, '..', '..', 'week1_data', 'yfinance_data')
+    # folder_path = 'C:/Users/Admin/Week1_data/yfinance_data'  # Replace with your folder path
     return folder_path
 def get_path_news():
     # Path to the folder containing your CSV files
-    folder_path = '.../week1_data/news/raw_analyst_ratings.csv'  # Replace with your folder path
+    folder_path = os.path.join(current_dir, '..', '..','week1_data', 'news', 'raw_analyst_ratings.csv')  # Replace with your folder path
     return folder_path
 
 def new_load(path):

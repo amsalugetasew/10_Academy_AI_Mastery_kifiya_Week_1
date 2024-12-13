@@ -1,13 +1,15 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from preprocessing import preprocess_dates
+from EDA import EDA
 class TimeSeries:
     def __init__(self, dataframe):
         """
         Initializes the TimeSeries class with the provided DataFrame and preprocesses the date column.
         """
-        self.dataframe = preprocess_dates(dataframe)  # Preprocess the DataFrame during initialization
+        eda = EDA(dataframe)
+        eda.parse_dates()
+        self.dataframe = eda.dataframe  # Preprocess the DataFrame during initialization
 
     def analyze_publication_frequency(self, time_unit='D'):
         """
@@ -122,3 +124,34 @@ class TimeSeries:
             plt.xticks(rotation=45)
             plt.grid(True)
             plt.show()
+
+    
+    
+    def analyze_correlation(self, stock_df):
+        """
+        Analyze the correlation between sentiment scores and stock price changes.
+        """
+        self.dataframe['date'] = self.dataframe['date'].dt.date
+        stock_df['Date'] = pd.to_datetime(stock_df['Date'])
+
+        stock_df['Price_Change'] = stock_df['Close'].pct_change()
+        sentiment_map = {'positive': 1, 'neutral': 0, 'negative': -1}
+        self.dataframe['sentiment'] = self.dataframe['headline'].apply(
+            lambda x: sentiment_map.get(x, 0)
+        )
+
+        merged_df = pd.merge(
+            self.dataframe, stock_df,
+            left_on=['date', 'stock'],
+            right_on=['Date', 'company'],
+            how='inner'
+        )
+
+        correlation_data = merged_df.groupby('sentiment')['Price_Change'].mean()
+        print("Correlation data:")
+        print(correlation_data)
+
+        corr_matrix = merged_df[['sentiment', 'Price_Change']].corr()
+        sns.heatmap(corr_matrix, annot=True, cmap='coolwarm')
+        plt.title("Correlation Between Sentiment and Stock Price Change")
+        plt.show()
