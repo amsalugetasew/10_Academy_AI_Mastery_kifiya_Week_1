@@ -31,7 +31,8 @@ class CSVLoader:
                 
                 # Add the 'company' column with the first four characters of the file name
                 company_name = csv_file[:4] if len(csv_file) >= 4 else csv_file  # Handle short file names
-                
+                df['date'] = df['Date']
+                df.drop(columns=['Date'], inplace=True)
                 df['company'] = company_name
                 
                 # Append the dataframe to the list
