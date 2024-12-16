@@ -1,15 +1,23 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from EDA import EDA
+# from EDA import EDA
+from preprocessing import Preprocessing
 class TimeSeries:
     def __init__(self, dataframe):
         """
         Initializes the TimeSeries class with the provided DataFrame and preprocesses the date column.
         """
-        eda = EDA(dataframe)
-        eda.parse_dates()
-        self.dataframe = eda.dataframe  # Preprocess the DataFrame during initialization
+        # Use the Preprocessing class to parse the date column
+        date_transformation = Preprocessing()
+        self.dataframe = date_transformation.process_date_column(dataframe, 'date')
+        
+        # preprocessing.process_date_column()  # Assuming this method handles all date parsing logic
+        # self.dataframe = preprocessing.dataframe  # Use the preprocessed DataFrame
+        
+        # eda = EDA(dataframe)
+        # eda.parse_dates()
+        # self.dataframe = eda.dataframe  # Preprocess the DataFrame during initialization
 
     def analyze_publication_frequency(self, time_unit='D'):
         """

@@ -153,3 +153,25 @@ class Preprocessing:
         plt.xlabel("Year")
         plt.ylabel("Number of Articles")
         plt.show()
+        
+    def process_date_column(df, date_column, date_format=None):
+        """
+        Processes the date column in a DataFrame.
+        
+        Parameters:
+            df (pd.DataFrame): The DataFrame containing the date column.
+            date_column (str): The name of the date column to process.
+            date_format (str, optional): The format of the date strings, if known.
+        
+        Returns:
+            pd.DataFrame: The DataFrame with the processed date column.
+        """
+        # Convert the date column to datetime format
+        if date_format:
+            df[date_column] = pd.to_datetime(df[date_column], format=date_format)
+        else:
+            # Handle cases where the date string length might be inconsistent
+            df[date_column] = df[date_column].apply(lambda x: x[:10] if len(x) > 10 else x)
+            df[date_column] = pd.to_datetime(df[date_column])
+        
+        return df
