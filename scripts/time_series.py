@@ -151,7 +151,7 @@ class TimeSeries:
         merged_df = pd.merge(
             self.dataframe, stock_df,
             left_on=['date', 'stock'],
-            right_on=['Date', 'company'],
+            right_on=['Date', 'stock'],
             how='inner'
         )
 

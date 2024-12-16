@@ -33,7 +33,7 @@ class CSVLoader:
                 company_name = csv_file[:4] if len(csv_file) >= 4 else csv_file  # Handle short file names
                 df['date'] = df['Date']
                 df.drop(columns=['Date'], inplace=True)
-                df['company'] = company_name
+                df['stock'] = company_name
                 
                 # Append the dataframe to the list
                 self.dataframes.append(df)

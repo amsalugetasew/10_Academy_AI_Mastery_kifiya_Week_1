@@ -32,7 +32,7 @@ class Correlation:
         aligned_news_data = self.news_df[self.news_df['date'].isin(aligned_stock_data['date'])]
 
         # Filter sentiment data for common dates and specific stocks
-        company_list = self.merged_df['company'].unique()  # Get unique companies from merged_df
+        company_list = self.merged_df['stock'].unique()  # Get unique companies from merged_df
         common_conditions = (
             self.news_df['date'].isin(self.merged_df['date']) &
             self.news_df['stock'].isin(company_list)

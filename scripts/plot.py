@@ -1,5 +1,7 @@
 # Visualization of Financial Analysis
 import plotly.graph_objects as go
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 class StockPlot:
     def __init__(self, dataframe):
@@ -80,3 +82,73 @@ class StockPlot:
             font=dict(color='black')  # Black text color
         )
         fig.show()
+
+
+
+    def stock_sentiment_correlation(self, sentiment_correlation):
+        """
+        Plot the correlation heatmap between sentiment scores and stock prices.
+        
+        Parameters:
+            sentiment_correlation (pd.DataFrame): DataFrame containing correlation values.
+        """
+        plt.figure(figsize=(10, 6))
+        sns.heatmap(sentiment_correlation, annot=True, cmap='coolwarm', fmt=".2f", cbar=True)
+        plt.title("Correlation Between Sentiment and Stock Prices")
+        plt.xlabel("Stock Price Features")
+        plt.ylabel("Sentiment Metrics")
+        plt.show()
+        
+    
+    def daily_return_over_time(self):
+        """
+        Plot daily stock returns over time.
+        """
+        plt.figure(figsize=(10, 6))
+        plt.plot(self.df['date'], self.df['daily_return'], marker='o', linestyle='-', color='purple', label='Daily Returns')
+        plt.axhline(0, color='red', linestyle='--', linewidth=0.8, label='Zero Return')
+        plt.title("Daily Stock Returns Over Time")
+        plt.xlabel("Date")
+        plt.ylabel("Daily Return (%)")
+        plt.legend()
+        plt.grid(True)
+        plt.show()
+        
+        
+        
+    def scatter_sentiment_vs_returns(self):
+        """
+        Scatter plot for sentiment vs. daily returns.
+
+        Parameters:
+            merged_data (pd.DataFrame): DataFrame containing 'avg_sentiment_score' and 'daily_return' columns.
+        """
+        plt.figure(figsize=(10, 6))
+        sns.scatterplot(
+            data=self.df, 
+            x='avg_sentiment_score', 
+            y='daily_return', 
+            hue='daily_return', 
+            palette='coolwarm'
+        )
+        plt.title("Correlation Between Daily Returns and Average Sentiment Score")
+        plt.xlabel("Average Sentiment Score")
+        plt.ylabel("Daily Return (%)")
+        plt.axhline(0, color='red', linestyle='--', linewidth=0.8)
+        plt.axvline(0, color='gray', linestyle='--', linewidth=0.8)
+        plt.grid(True)
+        plt.show()
+
+    def daily_return_over_time(self):
+        """
+        Plot daily stock returns over time.
+        """
+        plt.figure(figsize=(10, 6))
+        plt.plot(self.df['date'], self.df['daily_return'], marker='o', linestyle='-', color='purple', label='Daily Returns')
+        plt.axhline(0, color='red', linestyle='--', linewidth=0.8, label='Zero Return')
+        plt.title("Daily Stock Returns Over Time")
+        plt.xlabel("Date")
+        plt.ylabel("Daily Return (%)")
+        plt.legend()
+        plt.grid(True)
+        plt.show()
