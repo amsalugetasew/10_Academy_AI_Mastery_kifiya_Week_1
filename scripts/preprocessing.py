@@ -70,6 +70,7 @@ class Preprocessing:
             raise ValueError("The dataframe does not contain a 'publisher' column. Please provide the correct input.")
 
         # Count the number of articles per publisher
+        # publisher_counts
         publisher_counts = self.dataframe['publisher'].value_counts()
 
         # Print the number of articles per publisher

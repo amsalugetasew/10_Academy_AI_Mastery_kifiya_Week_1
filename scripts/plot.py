@@ -2,6 +2,7 @@
 import plotly.graph_objects as go
 import seaborn as sns
 import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
 
 class StockPlot:
     def __init__(self, dataframe):
@@ -104,6 +105,12 @@ class StockPlot:
         """
         Plot daily stock returns over time.
         """
+        df = df.sort_values(by='date')  # Sort the DataFrame by date
+
+        # Compute daily stock returns as percentage change in 'Close'
+        df['daily_return'] = df['Close'].pct_change() * 100  # Multiply by 100 to get percentage
+        
+        
         plt.figure(figsize=(10, 6))
         plt.plot(self.df['date'], self.df['daily_return'], marker='o', linestyle='-', color='purple', label='Daily Returns')
         plt.axhline(0, color='red', linestyle='--', linewidth=0.8, label='Zero Return')
@@ -151,4 +158,49 @@ class StockPlot:
         plt.ylabel("Daily Return (%)")
         plt.legend()
         plt.grid(True)
+        plt.show()
+        
+    def k_means_cluster(self, n_clusters=3):
+        """
+        Perform K-Means clustering on sentiment scores and visualize the clusters.
+        
+        Parameters:
+            n_clusters (int): Number of clusters for K-Means.
+        """
+        # Check if 'sentiment' column exists
+        if 'sentiment_score' not in self.df.columns:
+            raise ValueError("DataFrame must contain a 'sentiment' column for clustering.")
+        
+        # Prepare the sentiment scores for clustering
+        scores = self.df['sentiment_score'].values.reshape(-1, 1)
+        
+        # Perform K-Means clustering
+        kmeans = KMeans(n_clusters=n_clusters, random_state=0).fit(scores)
+        self.df['sentiment_cluster'] = kmeans.labels_
+        
+        # Visualize the clusters
+        plt.figure(figsize=(10, 6))
+        plt.scatter(self.df.index, self.df['sentiment_score'], c=self.df['sentiment_cluster'], cmap='viridis', alpha=0.5)
+        plt.title("K-Means Clustering of Sentiment Scores")
+        plt.xlabel("Index")
+        plt.ylabel("Sentiment Score")
+        plt.colorbar(label='Cluster')
+        plt.grid(True)
+        plt.legend()
+        plt.show()
+        
+    
+    def freq_dist_inHistogram(self):
+        """
+        Plot the frequency distribution of sentiment scores as a histogram.
+        """
+        if 'sentiment_score' not in self.df.columns:
+            raise ValueError("DataFrame must contain a 'sentiment' column to plot its distribution.")
+        
+        plt.figure(figsize=(10, 6))
+        plt.hist(self.df['sentiment_score'], bins=50, color='blue', edgecolor='black')
+        plt.title("Distribution of Sentiment Scores")
+        plt.xlabel("Sentiment Score")
+        plt.ylabel("Frequency")
+        plt.grid(True, linestyle='--', alpha=0.7)
         plt.show()
