@@ -71,7 +71,12 @@ class Preprocessing:
 
         # Count the number of articles per publisher
         # publisher_counts
-        publisher_counts = self.dataframe['publisher'].value_counts()
+        
+        # publisher_counts = self.dataframe['publisher'].value_counts()
+        # publisher_counts = self.dataframe['publisher'].value_counts().sort_values(ascending=False)
+        publisher_counts = self.dataframe['publisher'].value_counts().sort_values(ascending=False).head(30)
+
+
 
         # Print the number of articles per publisher
         print("Number of Articles Per Publisher:")
@@ -80,7 +85,7 @@ class Preprocessing:
         # Plot the distribution of articles per publisher
         plt.figure(figsize=(12, 6))
         publisher_counts.plot(kind='bar', color='purple', alpha=0.7)
-        plt.title("Number of Articles Per Publisher")
+        plt.title("Number of Articles Per Publisher of Top 30 Publisher")
         plt.xlabel("Publisher")
         plt.ylabel("Number of Articles")
         plt.xticks(rotation=45, ha="right")
